@@ -1,9 +1,3 @@
-package javagit;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Commit {
 	private String sha;
 	private String rootsha;
@@ -11,19 +5,18 @@ public class Commit {
 	
 	public Commit(Tree root) throws Exception {
 		setRootsha(root.getSha());
-		setContent("tree" + root.getSha());
-		CalHash hs = new CalHash();
-		setSha(hs.blobHash(getContent()));
-		genCommitFile();
+		setContent("tree " + root.getSha());
+		setSha(CalHash.blobHash(getContent()));
+		kvstorage.createFile(sha, content);
 	}
 	
-	public Commit(Tree root, Commit precommit) throws Exception {
-		if(root.getSha() != precommit.getRootsha()) {
-		setContent("tree" + root.getSha() + "/n");
-		setContent(getContent() + "parent" + precommit.getSha());
-		CalHash hs = new CalHash();
-		setSha(hs.blobHash(getContent()));
-		genCommitFile();
+	public Commit(Tree root, String precommitkey) throws Exception {
+		if(root.getSha() != precommitkey) {
+		//为了方便解析取消了换行符
+		setContent("tree " + root.getSha() + " ");
+		setContent(getContent() + " parent " + precommitkey);
+		setSha(CalHash.blobHash(getContent()));
+		kvstorage.createFile(sha, content);
 		}
 	}
 	
@@ -50,14 +43,4 @@ public class Commit {
 	public void setRootsha(String rootsha) {
 		this.rootsha = rootsha;
 	}
-
-	public void genCommitFile() throws Exception {
-		File f = new File(".\\object\\");
-		Tree t = new Tree();
-		Commit cmt = new Commit(t);
-		f.createNewFile();
-		FileWriter newFile = new FileWriter(f);
-		newFile.write(t.getContent());
-	}
-	
 }

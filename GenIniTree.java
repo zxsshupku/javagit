@@ -1,5 +1,3 @@
-package javagit;
-
 import java.io.File;
 
 public class GenIniTree {
@@ -18,9 +16,10 @@ public class GenIniTree {
 		}
  	}
 	
-	public static void genInitialTree(String path) throws Exception {
+	public static Tree genInitialTree(String path) throws Exception {
 		Tree t = new Tree();
 		dfs(path, t);
-		t.genTreeFile();
+		kvstorage.createFile(t.getSha(), t.getContent());
+		return t;
 	}
 }

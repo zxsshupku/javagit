@@ -1,27 +1,19 @@
-package javagit;
-
 import java.io.File;
-import java.security.MessageDigest;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.BufferedInputStream;
 
 public class Blob {
 
-	//定义blob属性
 	private String sha;
 	private byte[] content;
 	private String filepath;
 		
-	//浠ユ枃浠惰矾寰勪綔涓哄弬鏁扮殑blob鏋勯�犲嚱鏁�
 	public Blob(String filepath) throws Exception {
 		this.filepath = filepath;
 		this.sha = CalHash.blobHash(filepath);
 		this.content = setContent(filepath);
 	}
 	
-	//灏佽
 	public String getPath() {
 		return filepath;
 	}
@@ -30,7 +22,6 @@ public class Blob {
 		return sha;
 	}
 	
-	//璇诲彇鏂囦欢鍐呭
 	public byte[] setContent(String filepath) throws IOException {
 		File file = new File(filepath);
 		
