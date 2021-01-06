@@ -6,16 +6,15 @@ public class Commit {
 	public Commit(Tree root) throws Exception {
 		setRootsha(root.getSha());
 		setContent("tree " + root.getSha());
-		setSha(CalHash.blobHash(getContent()));
+		setSha(CalHash.struHash(getContent()));
 		kvstorage.createFile(sha, content);
 	}
 	
 	public Commit(Tree root, String precommitkey) throws Exception {
 		if(root.getSha() != precommitkey) {
 		//为了方便解析取消了换行符
-		setContent("tree " + root.getSha() + " ");
-		setContent(getContent() + " parent " + precommitkey);
-		setSha(CalHash.blobHash(getContent()));
+		setContent("tree " + root.getSha() + " parent " + precommitkey);
+		setSha(CalHash.struHash(getContent()));
 		kvstorage.createFile(sha, content);
 		}
 	}

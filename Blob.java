@@ -1,17 +1,17 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 public class Blob {
-
 	private String sha;
-	private byte[] content;
+	private String content;
 	private String filepath;
 		
 	public Blob(String filepath) throws Exception {
 		this.filepath = filepath;
 		this.sha = CalHash.blobHash(filepath);
 		this.content = setContent(filepath);
+		kvstorage.createFile(sha, content);
 	}
 	
 	public String getPath() {
@@ -22,32 +22,20 @@ public class Blob {
 		return sha;
 	}
 	
-	public byte[] setContent(String filepath) throws IOException {
-		File file = new File(filepath);
-		
-		long fileSize = file.length();
-		if (fileSize > Integer.MAX_VALUE) {
-			return null;
+	public String setContent(String filepath) throws Exception {
+		FileReader fr = new FileReader(filepath);
+		BufferedReader br = new BufferedReader(fr);
+		StringBuffer buffer = new StringBuffer();
+		String tmp = null;
+		while ((tmp = br.readLine()) != null) {
+			buffer.append(tmp.trim());
 		}
-		
-		FileInputStream fis = new FileInputStream(file);
-		byte[] buffer = new byte[(int)fileSize];
-		int offset = 0, numread = 0;
-		
-		while (offset < buffer.length && (numread = fis.read(buffer, offset, buffer.length - offset)) >= 0) {
-			offset += numread;
-        }
-		
-		if (offset != buffer.length) {
-			fis.close();
-			throw new IOException("Could not completely read file " + file.getName());
-	    }
-		
-		fis.close();
-		return buffer;
+		br.close();
+		return buffer.toString();
 	}
+
 	
-	public byte[] getContent() {
+	public String getContent() {
 		return content;
 	}
 }
