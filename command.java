@@ -58,6 +58,8 @@ public class command {
 	}
 
 	public static void gitInit() throws Exception {
+		File file = new File(".\\javagit\\workspace");
+		kvstorage.fileCopy(file, ".\\javagit\\buffer");
 		Tree t = GenIniTree.genInitialTree(".\\javagit\\workspace");
 		Commit c = new Commit(t);
 		String commitkey = c.getSha();
@@ -81,7 +83,7 @@ public class command {
 		}
 	}
 	
-	//½«Ä¿±êÂ·¾¶Ä³ÎÄ¼ş¸´ÖÆµ½Ôİ´æÇø È»ºóÔÚcommitÊ±¶ÔÕû¸öÔİ´æÇøÎÄ¼ş¼ĞÉú³ÉÊ÷
+	//å°†ç›®æ ‡è·¯å¾„æŸæ–‡ä»¶å¤åˆ¶åˆ°æš‚å­˜åŒº ç„¶ååœ¨commitæ—¶å¯¹æ•´ä¸ªæš‚å­˜åŒºæ–‡ä»¶å¤¹ç”Ÿæˆæ ‘
 	public static void gitAdd(String name) throws Exception {
 		File file = new File(".\\javagit\\workspace"+ "\\" + name);
 		kvstorage.fileCopy(file, ".\\javagit\\buffer");
@@ -94,7 +96,7 @@ public class command {
 		branch.commitChange(c.getSha());
 	}
 	
-	//ÒªÇó²ÎÊıÊäÈëkeyºÍÎÄ¼ş»Ö¸´Â·¾¶
+	//è¦æ±‚å‚æ•°è¾“å…¥keyå’Œæ–‡ä»¶æ¢å¤è·¯å¾„
 	public static void reset(String commitkey, String path) throws Exception{
 		kvstorage.fileDelete(".\\javagit\\workspace");
 		kvstorage.fileDelete(".\\javagit\\buffer");
@@ -104,7 +106,7 @@ public class command {
 		branch.commitChange(commitkey);
 	}
 	
-	//ÏÈ½«masterµÄÎÄ¼ş»Ø¹öµ½Ôİ´æÇø£¬ÔÙ½«ÉÏÒ»´ÎcommitµÄÎÄ¼ş»Ø¹öµ½Ôİ´æÇø£¬ÆäÖĞÍ¬ÃûÎÄ¼ş½«¸²¸Ç£¬ÔÙ¶Ômaster·ÖÖ§½øĞĞÒ»´Îcommit
+	//å…ˆå°†masterçš„æ–‡ä»¶å›æ»šåˆ°æš‚å­˜åŒºï¼Œå†å°†ä¸Šä¸€æ¬¡commitçš„æ–‡ä»¶å›æ»šåˆ°æš‚å­˜åŒºï¼Œå…¶ä¸­åŒåæ–‡ä»¶å°†è¦†ç›–ï¼Œå†å¯¹masteråˆ†æ”¯è¿›è¡Œä¸€æ¬¡commit
 	public static void merge() throws Exception {
 		kvstorage.fileDelete(".\\javagit\\buffer");
 		String mastercommit = kvstorage.getBValue("master");
