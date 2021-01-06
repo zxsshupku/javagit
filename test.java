@@ -1,8 +1,18 @@
-package javagit;
+import java.io.File;
+import java.util.Scanner;
 
-public class test {
-	public static void main(String[] args) {
-		Dfs ddfs = new Dfs();
-		ddfs.rua("D:\\hashtest");
+public class test{
+	
+	public static void main(String arg[]) throws Exception {
+        Scanner input = new Scanner(System.in);
+        while(true) {
+        	String com = input.next();
+        	if(com == "x") 
+        		break;
+        	else
+        		command.getCommand(com);
+        }
+        input.close();
 	}
+	
 }

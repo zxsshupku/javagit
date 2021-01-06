@@ -24,11 +24,15 @@ public class branch {
 	public branch(String name, String commitkey) throws IOException {
 		bname = name;
 		content = commitkey;
-		kvstorage.createFile(name, content);
+		kvstorage.createBranch(name, content);
+	}
+	
+	public static void createMaster(String commitkey) throws IOException {
+		kvstorage.createBranch("master", commitkey);
 	}
 	
 	public static void commitChange(String commitkey) throws Exception {
 		String branchname = kvstorage.getBValue("head");
-		kvstorage.createFile(branchname, commitkey);
+		kvstorage.createBranch(branchname, commitkey);
 	}
 }
