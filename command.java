@@ -5,10 +5,14 @@ import java.io.IOException;
 
 public class command {
 
-	public void getCommand(String command) throws Exception {
+	public static void getCommand(String command) throws Exception {
 		String[] split = command.split(" ");
 		if(split[0] == "git" && split[1] == "add") {
 			gitAdd(split[2]);
+		}
+		
+		else if(split[0] == "git" && split[1] == "init") {
+			gitInit();
 		}
 		
 		else if(split[0] == "git" && split[1] == "log") {
@@ -23,12 +27,41 @@ public class command {
 		else if(split[0] == "commit") {
 			commit();
 		}
+		
+		else if(split[0] == "git" && split[1] == "diff") {
+			gitdiff(split[2]);
+		}
+		
+		else if(split[0] == "checkout") {
+			head.branchChange(split[1]);
+		}
+		
+		else if(split[0] == "branch") {
+			new branch(split[1], head.getCurrentCommit());
+		}
+		
+		else if(split[0] == "merge") {
+			
+		}
+		
 		else 
 			System.out.print("input error");
 			
 	}
 	
-	public void gitLog() throws Exception {
+	private static void gitdiff(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void gitInit() throws Exception {
+		Tree t = GenIniTree.genInitialTree(".\\workspace");
+		Commit c = new Commit(t);
+		String commitkey = c.getContent();
+		branch.createMaster(commitkey);
+	}
+	
+	public static void gitLog() throws Exception {
 		boolean flag = true;
 		String commitkey = head.getCurrentCommit();
 		System.out.println(commitkey);
@@ -45,12 +78,12 @@ public class command {
 	}
 	
 	//将目标路径某文件复制到暂存区 然后在commit时对整个暂存区文件夹生成树
-	public void gitAdd(String path) throws Exception {
-		File file = new File(path);
+	public static void gitAdd(String name) throws Exception {
+		File file = new File(".\\workspace"+ "\\" + name);
 		fileCopy(file, ".\\buffer");
 	}
 	
-	public void commit() throws Exception{
+	public static void commit() throws Exception{
 		Tree t = GenIniTree.genInitialTree(".\\buffer");
 		String precommit = head.getCurrentCommit();
 		Commit c = new Commit(t, precommit);
@@ -58,8 +91,13 @@ public class command {
 	}
 	
 	//要求参数输入key和文件恢复路径
-	public void reset(String commitkey, String path) throws Exception {
-		loadback.loadBack(commitkey, path);
+	public static void reset(String commitkey, String path) throws Exception {
+		fileDelete(".\\workspace");
+		fileDelete(".\\buffer");
+		loadback.loadBack(commitkey, ".\\workspace");
+		File file = new File(".\\workspace");
+		fileCopy(file, ".\\buffer");
+		branch.commitChange(commitkey);
 	}
 	
 
@@ -96,6 +134,23 @@ public class command {
 			}
 			is.close();
 			os.close();
+		}
+	}
+	
+	private void fileDelete(String path) {
+		File file = new File(path);
+		if(file.exists()) {
+			File[] files = file.listFiles();
+			for(File f : files) {
+				if(f.isFile()) {
+					f.delete();
+				}
+				if(f.isDirectory()){
+					String fpath = f.getPath();
+					fileDelete(fpath);
+					f.delete();
+				}
+			}
 		}
 	}
 }
