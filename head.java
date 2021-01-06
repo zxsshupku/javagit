@@ -12,7 +12,7 @@ public class head {
 	
 	public static void branchChange(String bname) throws Exception {
 		String commitkey = kvstorage.getBValue(bname);
-		loadback.loadBack(commitkey, ".\\workspace");
+		loadback.loadBack(commitkey, ".\\javagit\\workspace");
 		createHead(bname);
 	}
 	

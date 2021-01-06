@@ -1,19 +1,8 @@
-package javagit;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public final class Diff {
-	
-	             /* test */
-	 /* 
-	  * public static void main(String[] args) {
-	  *
-	  *		diff("D:\\old.txt", "D:\\new.txt");
-	  * }
-	  */
-		
 	
 	//读取文件内容
 	public static String[] readFile(String name) throws Exception {

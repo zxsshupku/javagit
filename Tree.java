@@ -2,7 +2,9 @@ public class Tree {
 	private String sha;
 	private String content;
 	
-	public Tree() {}
+	public Tree() {
+		content = " ";
+	}
 	
 	public void addblob(Blob b, String name) throws Exception{
 		//为了方便解析取消了换行符
