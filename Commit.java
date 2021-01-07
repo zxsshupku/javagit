@@ -12,7 +12,6 @@ public class Commit {
 	
 	public Commit(Tree root, String precommitkey) throws Exception {
 		if(root.getSha() != precommitkey) {
-		//为了方便解析取消了换行符
 		setContent("tree " + root.getSha() + " parent " + precommitkey);
 		setSha(CalHash.struHash(getContent()));
 		kvstorage.createFile(sha, content);

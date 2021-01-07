@@ -5,7 +5,7 @@ public class Tree {
 	public Tree() {}
 	
 	public void addblob(Blob b, String name) throws Exception{
-		//涓轰簡鏂逛究瑙ｆ瀽鍙栨秷浜嗘崲琛岀
+		//为了方便解析取消了换行符
 		if(getContent() == null)
 			setContent("blob " + b.getSha() + " " + name);
 		else
